@@ -9,9 +9,31 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.Inventory;
+import org.bukkit.inventory.ItemStack;
 
 public class ArmorBuyListener extends GenericMenu {
     public static final Component INVENTORY_NAME = Component.text("§c[TheDark] §bArmor Upgrades");
+    private static final int NUMBER_UPGRADES = 8;
+    private static final String[] NAMES = {
+            "§7Leather Armor",
+            "§fChain Armor",
+            "§f§lIron Armor",
+            "§bDiamond Chestplate",
+            "§bDiamond Leggings",
+            "§bDiamond Boots",
+            "§bDiamond Helmet",
+            "§8§lNetherite Armor",
+    };
+    private static final int[] COSTS = {
+            500,
+            1000,
+            2000,
+            5000,
+            10000,
+            25000,
+            100000,
+            600000,
+    };
 
     private final TheDark plugin;
     public ArmorBuyListener(TheDark plugin) {
@@ -25,24 +47,48 @@ public class ArmorBuyListener extends GenericMenu {
 
         int lvl = profile.armorLevel;
 
-        Material mat = (lvl == 0) ? Material.LIGHT_BLUE_STAINED_GLASS : (lvl > 0) ? Material.GREEN_STAINED_GLASS_PANE : Material.RED_STAINED_GLASS_PANE;
-        gui.setItem(0, Util.createItemStack(mat, 1, "§eLeather Armor", "§7Cost: §6500"));
-
-        mat = (lvl == 1) ? Material.LIGHT_BLUE_STAINED_GLASS : (lvl > 1) ? Material.GREEN_STAINED_GLASS_PANE : Material.RED_STAINED_GLASS_PANE;
-        gui.setItem(1, Util.createItemStack(mat, 1, "§eChain Armor", "§7Cost: §62,000"));
-
-        mat = (lvl == 2) ? Material.LIGHT_BLUE_STAINED_GLASS : (lvl > 2) ? Material.GREEN_STAINED_GLASS_PANE : Material.RED_STAINED_GLASS_PANE;
-        gui.setItem(2, Util.createItemStack(mat, 1, "§eIron Armor", "§7Cost: §65,000"));
-
-        mat = (lvl == 3) ? Material.LIGHT_BLUE_STAINED_GLASS : (lvl > 3) ? Material.GREEN_STAINED_GLASS_PANE : Material.RED_STAINED_GLASS_PANE;
-        gui.setItem(3, Util.createItemStack(mat, 1, "§eDiamond Chestplate", "§7Cost: §610,000"));
+        for (int i = 0; i < NUMBER_UPGRADES; i++) {
+            Material mat = (lvl == i) ? Material.LIGHT_BLUE_STAINED_GLASS : (lvl > i) ? Material.GREEN_STAINED_GLASS_PANE : Material.RED_STAINED_GLASS_PANE;
+            gui.setItem(i, Util.createItemStack(mat, 1,
+                    NAMES[i],
+                    String.format("§7Cost: §6%,d", COSTS[i])));
+        }
 
         player.openInventory(gui);
     }
 
     @EventHandler()
     public void onInventoryClick(InventoryClickEvent event) {
-
+        if (!event.getView().title().equals(INVENTORY_NAME))  return;
+        event.setCancelled(true);
+        int slot = event.getSlot();
+        if (slot >= NUMBER_UPGRADES)  return;
+        Player player = (Player) event.getWhoClicked();
+        PlayerProfile profile = plugin.getGameManager().getPlayerProfile(player);
+        if (profile == null) {
+            player.sendMessage("§cYou don't have a profile!");
+            return;
+        }
+        int currentLevel = profile.armorLevel;
+        if (slot > currentLevel) {
+            player.sendMessage("§cYou need to buy the previous upgrade first!");
+            player.closeInventory();
+            return;
+        }
+        if (slot < currentLevel) {
+            player.sendMessage("§cYou already have this upgrade!");
+            player.closeInventory();
+            return;
+        }
+        int cost = COSTS[slot];
+        if (profile.coins < cost) {
+            player.sendMessage("§cYou can't afford this!");
+            return;
+        }
+        profile.coins -= cost;
+        profile.armorLevel++;
+        player.sendMessage("§aYou have successfully upgraded your armor!");
+        player.closeInventory();
     }
 
 }
