@@ -1,6 +1,7 @@
 package io.github.greatericontop.thedark.player;
 
 import io.github.greatericontop.thedark.menus.ArmorBuyListener;
+import io.github.greatericontop.thedark.menus.SwordBuyListener;
 import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
@@ -11,12 +12,14 @@ public class PlayerProfile {
     public int coins;
     public int armorLevel;
     public int armorProtectionLevel;
+    public int swordTier;
 
     public PlayerProfile(Player player) {
         this.player = player;
         coins = 0;
         armorLevel = 0;
         armorProtectionLevel = 0;
+        swordTier = 1;
     }
 
     public Player getPlayer() {
@@ -24,7 +27,12 @@ public class PlayerProfile {
     }
 
 
-    public void updateArmor() {
+    public void updateInventory() {
+        // SWORD
+        Material swordMaterial = SwordBuyListener.SWORD_MATERIALS[swordTier - 1];
+        ItemStack sword = new ItemStack(swordMaterial, 1);
+        player.getInventory().setItem(0, sword);
+        // ARMOR
         if (armorLevel == 0) {
             player.getInventory().setHelmet(null);
             player.getInventory().setChestplate(null);
