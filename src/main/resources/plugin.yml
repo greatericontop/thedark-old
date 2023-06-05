@@ -1,0 +1,16 @@
+name: TheDark
+version: '${project.version}'
+main: io.github.greatericontop.thedark.TheDark
+api-version: 1.19
+
+
+commands:
+  thedark:
+    description: TheDark Command
+    usage: §c/thedark <...>
+    permission: thedark.command
+    permission-message: §cNo permission!
+
+permissions:
+  thedark.command:
+    default: op
