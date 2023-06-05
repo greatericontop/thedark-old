@@ -3,10 +3,15 @@ package io.github.greatericontop.thedark;
 import io.github.greatericontop.thedark.enemy.BasicZombie;
 import io.github.greatericontop.thedark.enemy.FatDebugZombie;
 import io.github.greatericontop.thedark.player.PlayerProfile;
+import io.github.greatericontop.thedark.player.SignListener;
+import org.bukkit.Material;
+import org.bukkit.block.Block;
+import org.bukkit.block.Sign;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import org.bukkit.persistence.PersistentDataType;
 
 public class TheDarkCommand implements CommandExecutor {
 
@@ -45,6 +50,17 @@ public class TheDarkCommand implements CommandExecutor {
             PlayerProfile profile = new PlayerProfile(player);
             profile.coins = Integer.parseInt(args[1]);
             plugin.getGameManager().playerProfiles.put(player.getUniqueId(), profile);
+            return true;
+        }
+        if (args[0].equals("setSign")) {
+            Block lookingAt = player.getTargetBlock(10);
+            if (lookingAt == null || (lookingAt.getType() != Material.OAK_WALL_SIGN && lookingAt.getType() != Material.OAK_SIGN)) {
+                player.sendMessage("§cYou must be looking at a sign!");
+                return true;
+            }
+            Sign sign = (Sign) lookingAt.getState(false); // get real state as we're going to modify it
+            sign.getPersistentDataContainer().set(SignListener.SIGN_TYPE_KEY, PersistentDataType.STRING, args[1]);
+            player.sendMessage("§3Set your sign to be: §7" + args[1]);
             return true;
         }
 

@@ -4,6 +4,7 @@ import io.github.greatericontop.thedark.enemy.BaseEnemy;
 import io.github.greatericontop.thedark.player.PlayerProfile;
 import net.kyori.adventure.text.Component;
 import org.bukkit.Location;
+import org.bukkit.entity.Player;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
@@ -21,6 +22,10 @@ public class GameManager {
 
     public GameManager(TheDark plugin) {
         this.plugin = plugin;
+    }
+
+    public PlayerProfile getPlayerProfile(Player player) {
+        return playerProfiles.get(player.getUniqueId());
     }
 
     public void tick() {
