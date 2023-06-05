@@ -3,7 +3,7 @@ package io.github.greatericontop.thedark;
 import io.github.greatericontop.thedark.enemy.BasicZombie;
 import io.github.greatericontop.thedark.enemy.FatDebugZombie;
 import io.github.greatericontop.thedark.player.PlayerProfile;
-import io.github.greatericontop.thedark.player.SignListener;
+import io.github.greatericontop.thedark.menus.SignListener;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.Sign;

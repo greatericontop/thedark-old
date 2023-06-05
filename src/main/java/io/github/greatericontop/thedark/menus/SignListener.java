@@ -1,6 +1,7 @@
-package io.github.greatericontop.thedark.player;
+package io.github.greatericontop.thedark.menus;
 
 import io.github.greatericontop.thedark.TheDark;
+import io.github.greatericontop.thedark.player.PlayerProfile;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
 import org.bukkit.block.Sign;

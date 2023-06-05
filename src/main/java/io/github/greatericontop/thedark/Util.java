@@ -2,6 +2,8 @@ package io.github.greatericontop.thedark;
 
 import net.kyori.adventure.text.Component;
 import org.bukkit.Material;
+import org.bukkit.Sound;
+import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
@@ -14,6 +16,14 @@ public class Util {
         im.setLore(java.util.Arrays.asList(lore));
         stack.setItemMeta(im);
         return stack;
+    }
+
+    public static void playSuccessSound(Player player) {
+        player.playSound(player.getLocation(), Sound.ENTITY_EXPERIENCE_ORB_PICKUP, 1.0F, 1.0F);
+    }
+
+    public static void playFailSound(Player player) {
+        player.playSound(player.getLocation(), Sound.ENTITY_ENDERMAN_TELEPORT, 1.0F, 1.0F);
     }
 
 }

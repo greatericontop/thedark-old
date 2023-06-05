@@ -1,7 +1,7 @@
 package io.github.greatericontop.thedark;
 
-import io.github.greatericontop.thedark.player.ArmorBuyListener;
-import io.github.greatericontop.thedark.player.SignListener;
+import io.github.greatericontop.thedark.menus.ArmorBuyListener;
+import io.github.greatericontop.thedark.menus.SignListener;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitRunnable;
 

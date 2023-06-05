@@ -1,7 +1,8 @@
-package io.github.greatericontop.thedark.player;
+package io.github.greatericontop.thedark.menus;
 
 import io.github.greatericontop.thedark.TheDark;
 import io.github.greatericontop.thedark.Util;
+import io.github.greatericontop.thedark.player.PlayerProfile;
 import net.kyori.adventure.text.Component;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
@@ -9,7 +10,6 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.Inventory;
-import org.bukkit.inventory.ItemStack;
 
 public class ArmorBuyListener extends GenericMenu {
     public static final Component INVENTORY_NAME = Component.text("§c[TheDark] §bArmor Upgrades");
@@ -48,7 +48,7 @@ public class ArmorBuyListener extends GenericMenu {
         int lvl = profile.armorLevel;
 
         for (int i = 0; i < NUMBER_UPGRADES; i++) {
-            Material mat = (lvl == i) ? Material.LIGHT_BLUE_STAINED_GLASS : (lvl > i) ? Material.GREEN_STAINED_GLASS_PANE : Material.RED_STAINED_GLASS_PANE;
+            Material mat = (lvl == i) ? Material.LIGHT_BLUE_STAINED_GLASS : (lvl > i) ? Material.LIME_STAINED_GLASS_PANE : Material.RED_STAINED_GLASS_PANE;
             gui.setItem(i, Util.createItemStack(mat, 1,
                     NAMES[i],
                     String.format("§7Cost: §6%,d", COSTS[i])));
@@ -72,23 +72,25 @@ public class ArmorBuyListener extends GenericMenu {
         int currentLevel = profile.armorLevel;
         if (slot > currentLevel) {
             player.sendMessage("§cYou need to buy the previous upgrade first!");
-            player.closeInventory();
+            Util.playFailSound(player);
             return;
         }
         if (slot < currentLevel) {
             player.sendMessage("§cYou already have this upgrade!");
-            player.closeInventory();
+            Util.playFailSound(player);
             return;
         }
         int cost = COSTS[slot];
         if (profile.coins < cost) {
             player.sendMessage("§cYou can't afford this!");
+            Util.playFailSound(player);
             return;
         }
         profile.coins -= cost;
         profile.armorLevel++;
         player.sendMessage("§aYou have successfully upgraded your armor!");
         player.closeInventory();
+        Util.playSuccessSound(player);
     }
 
 }

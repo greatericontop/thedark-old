@@ -1,5 +1,6 @@
-package io.github.greatericontop.thedark.player;
+package io.github.greatericontop.thedark.menus;
 
+import io.github.greatericontop.thedark.player.PlayerProfile;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Listener;
 
