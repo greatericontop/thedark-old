@@ -1,6 +1,7 @@
 package io.github.greatericontop.thedark.guns;
 
 import io.github.greatericontop.thedark.TheDark;
+import io.github.greatericontop.thedark.Util;
 import org.bukkit.FluidCollisionMode;
 import org.bukkit.Location;
 import org.bukkit.NamespacedKey;
@@ -38,9 +39,11 @@ public class GunUtil implements Listener {
         }
         // special properties
         if (gunType == GunType.SHOTGUN) {
-            targetLoc.getWorld().spawnParticle(Particle.EXPLOSION_LARGE, targetLoc, 8);
-            for (LivingEntity e : targetLoc.getNearbyLivingEntities(2.5)) {
-                e.damage(damage*Math.random(), owner);
+            for (LivingEntity e : targetLoc.getNearbyLivingEntities(2.0)) {
+                if (e.getType() == EntityType.PLAYER) {
+                    continue;
+                }
+                e.damage(damage*Util.randomDouble(0.5, 0.95), owner);
             }
         }
         // particles

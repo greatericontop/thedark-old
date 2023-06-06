@@ -26,4 +26,8 @@ public class Util {
         player.playSound(player.getLocation(), Sound.ENTITY_ENDERMAN_TELEPORT, 1.0F, 1.0F);
     }
 
+    public static double randomDouble(double min, double max) {
+        return (max - min) * Math.random() + min;
+    }
+
 }
