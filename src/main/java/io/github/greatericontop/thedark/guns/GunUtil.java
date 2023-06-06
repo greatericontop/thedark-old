@@ -6,13 +6,10 @@ import org.bukkit.Location;
 import org.bukkit.NamespacedKey;
 import org.bukkit.Particle;
 import org.bukkit.Sound;
-import org.bukkit.entity.Arrow;
+import org.bukkit.entity.EntityType;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
-import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
-import org.bukkit.event.entity.ProjectileHitEvent;
-import org.bukkit.persistence.PersistentDataType;
 import org.bukkit.util.RayTraceResult;
 import org.bukkit.util.Vector;
 
@@ -23,7 +20,10 @@ public class GunUtil implements Listener {
 
     public static void fireProjectile(GunType gunType, Location sourceLoc, Vector direction, Player owner, double damage, TheDark plugin) {
         // perform raytrace
-        RayTraceResult result = sourceLoc.getWorld().rayTrace(sourceLoc, direction, MAX_DISTANCE, FluidCollisionMode.NEVER, true, 0.0, entity -> entity instanceof LivingEntity);
+        RayTraceResult result = sourceLoc.getWorld().rayTrace(
+                sourceLoc, direction, MAX_DISTANCE,
+                FluidCollisionMode.NEVER, true, 0.0,
+                entity -> (entity instanceof LivingEntity && entity.getType() != EntityType.PLAYER));
         Location targetLoc;
         if (result != null) {
             targetLoc = result.getHitPosition().toLocation(sourceLoc.getWorld());
@@ -47,17 +47,5 @@ public class GunUtil implements Listener {
         // sound
         sourceLoc.getWorld().playSound(sourceLoc, Sound.ENTITY_GENERIC_EXPLODE, 0.225F, 1.0F);
     }
-
-//    @EventHandler()
-//    public void onArrowLand(ProjectileHitEvent event) {
-//        if (!(event.getEntity() instanceof Arrow arrow))  return;
-//        if (!(arrow.getShooter() instanceof Player shooter))  return;
-//        if (!arrow.getPersistentDataContainer().has(DAMAGE_KEY, PersistentDataType.DOUBLE))  return;
-//        double damage = arrow.getPersistentDataContainer().get(DAMAGE_KEY, PersistentDataType.DOUBLE);
-//
-//        if (event.getHitEntity() instanceof LivingEntity hitTarget) {
-//            hitTarget.damage(damage, shooter);
-//        }
-//    }
 
 }
