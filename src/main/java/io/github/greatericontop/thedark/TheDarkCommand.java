@@ -2,9 +2,11 @@ package io.github.greatericontop.thedark;
 
 import io.github.greatericontop.thedark.enemy.BasicZombie;
 import io.github.greatericontop.thedark.enemy.FatDebugZombie;
+import io.github.greatericontop.thedark.guns.GunType;
 import io.github.greatericontop.thedark.guns.GunUtil;
 import io.github.greatericontop.thedark.player.PlayerProfile;
 import io.github.greatericontop.thedark.menus.SignListener;
+import net.kyori.adventure.text.Component;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.Sign;
@@ -14,6 +16,8 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.persistence.PersistentDataType;
+
+import java.util.Arrays;
 
 public class TheDarkCommand implements CommandExecutor {
 
@@ -66,7 +70,15 @@ public class TheDarkCommand implements CommandExecutor {
             return true;
         }
         if (args[0].equals("makeGun")) {
-            player.getInventory().getItemInMainHand().editMeta((ItemMeta im) -> im.getPersistentDataContainer().set(GunUtil.GUN_KEY, PersistentDataType.STRING, args[1]));
+            ItemMeta im = player.getInventory().getItemInMainHand().getItemMeta();
+            GunType gunType = GunType.valueOf(args[1]);
+            im.getPersistentDataContainer().set(GunUtil.GUN_KEY, PersistentDataType.STRING, args[1]);
+            im.lore(Arrays.asList(
+                    Component.text(String.format("§7Damage: §f%.0f", gunType.getDamage())),
+                    Component.text(String.format("§7Fire Rate: §f%.2fs", gunType.getCooldownTicks()*0.05))
+            ));
+            player.getInventory().getItemInMainHand().setItemMeta(im);
+            return true;
         }
 
         return false;

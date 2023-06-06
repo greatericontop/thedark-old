@@ -3,6 +3,7 @@ package io.github.greatericontop.thedark.guns;
 public enum GunType {
 
     PISTOL(4.0, 8L),
+    SUPER_WEAPON(20.0, 2L),
 
     ;
 

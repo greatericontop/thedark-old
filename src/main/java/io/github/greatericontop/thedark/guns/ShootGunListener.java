@@ -38,7 +38,7 @@ public class ShootGunListener implements Listener {
         Map<UUID, Boolean> cooldowns = this.cooldowns.get(gunType);
         if (cooldowns.getOrDefault(player.getUniqueId(), false))  return;
 
-        GunUtil.fireProjectile(gunType, player.getEyeLocation(), player.getEyeLocation().getDirection(), player, gunType.getDamage());
+        GunUtil.fireProjectile(gunType, player.getEyeLocation(), player.getEyeLocation().getDirection(), player, gunType.getDamage(), plugin);
         cooldowns.put(player.getUniqueId(), true);
         Bukkit.getScheduler().runTaskLater(plugin, () -> cooldowns.put(player.getUniqueId(), false), gunType.getCooldownTicks());
     }
