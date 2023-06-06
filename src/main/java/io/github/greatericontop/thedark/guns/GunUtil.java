@@ -6,6 +6,7 @@ import org.bukkit.Location;
 import org.bukkit.NamespacedKey;
 import org.bukkit.Particle;
 import org.bukkit.Sound;
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
@@ -16,7 +17,7 @@ import org.bukkit.util.Vector;
 public class GunUtil implements Listener {
     public final static NamespacedKey GUN_KEY = new NamespacedKey("thedark", "gun");
     private final static NamespacedKey DAMAGE_KEY = new NamespacedKey("thedark", "arrow_damage");
-    private final static double MAX_DISTANCE = 80.0;
+    private final static double MAX_DISTANCE = 72.0;
 
     public static void fireProjectile(GunType gunType, Location sourceLoc, Vector direction, Player owner, double damage, TheDark plugin) {
         // perform raytrace
@@ -31,10 +32,16 @@ public class GunUtil implements Listener {
                 LivingEntity targetEntity = (LivingEntity) result.getHitEntity();
                 targetEntity.damage(damage, owner);
                 // TODO knockback?
-                // TODO custom effects on hit for some guns?
             }
         } else {
             targetLoc = sourceLoc.clone().add(direction.clone().multiply(MAX_DISTANCE));
+        }
+        // special properties
+        if (gunType == GunType.SHOTGUN) {
+            targetLoc.getWorld().spawnParticle(Particle.EXPLOSION_LARGE, targetLoc, 8);
+            for (LivingEntity e : targetLoc.getNearbyLivingEntities(3.0)) {
+                e.damage(damage, owner);
+            }
         }
         // particles
         Vector totalDelta = targetLoc.toVector().subtract(sourceLoc.toVector());
