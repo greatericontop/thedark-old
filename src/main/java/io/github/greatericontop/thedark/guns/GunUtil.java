@@ -39,8 +39,8 @@ public class GunUtil implements Listener {
         // special properties
         if (gunType == GunType.SHOTGUN) {
             targetLoc.getWorld().spawnParticle(Particle.EXPLOSION_LARGE, targetLoc, 8);
-            for (LivingEntity e : targetLoc.getNearbyLivingEntities(3.0)) {
-                e.damage(damage, owner);
+            for (LivingEntity e : targetLoc.getNearbyLivingEntities(2.5)) {
+                e.damage(damage*Math.random(), owner);
             }
         }
         // particles
