@@ -11,4 +11,9 @@ public class BasicZombie extends BaseEnemy {
         applyAttributes(20.0, 0.23); // same as vanilla
     }
 
+    @Override
+    public int coinsToAwardOnDeath() {
+        return 15;
+    }
+
 }

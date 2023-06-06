@@ -7,10 +7,10 @@ import org.bukkit.Location;
 import org.bukkit.entity.Player;
 
 import java.lang.reflect.InvocationTargetException;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
 import java.util.UUID;
 
 public class GameManager {
@@ -18,7 +18,7 @@ public class GameManager {
     private final TheDark plugin;
     // TODO: for testing
     public final Map<UUID, PlayerProfile> playerProfiles = new HashMap<>();
-    public final List<BaseEnemy> activeEnemies = new ArrayList<>();
+    public final Set<BaseEnemy> activeEnemies = new HashSet<>();
 
     public GameManager(TheDark plugin) {
         this.plugin = plugin;
@@ -35,7 +35,20 @@ public class GameManager {
             profile.updateInventory();
         }
         // tick enemies
-        activeEnemies.removeIf(BaseEnemy::isDead);
+        for (BaseEnemy enemy : activeEnemies) {
+            if (enemy.isDead()) {
+                Player killer = enemy.getEntity().getKiller();
+                if (killer != null) {
+                    PlayerProfile profile = getPlayerProfile(killer);
+                    if (profile != null) {
+                        int coins = enemy.coinsToAwardOnDeath();
+                        profile.coins += coins;
+                        killer.sendMessage(Component.text(String.format("§6+%d coins (kill)", coins)));
+                    }
+                }
+                activeEnemies.remove(enemy);
+            }
+        }
     }
 
     public void spawnEnemy(Class<? extends BaseEnemy> enemyClass, Location loc) {

@@ -14,4 +14,9 @@ public class FatDebugZombie extends BaseEnemy {
         entity.getEquipment().setChestplate(new ItemStack(Material.DIAMOND_CHESTPLATE, 1));
     }
 
+    @Override
+    public int coinsToAwardOnDeath() {
+        return 300;
+    }
+
 }

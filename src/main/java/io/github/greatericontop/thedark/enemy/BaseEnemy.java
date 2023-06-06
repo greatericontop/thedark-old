@@ -6,6 +6,10 @@ import org.bukkit.entity.LivingEntity;
 public abstract class BaseEnemy {
     protected LivingEntity entity;
 
+    public LivingEntity getEntity() {
+        return entity;
+    }
+
     public boolean isDead() {
         return entity.isDead();
     }
@@ -16,5 +20,8 @@ public abstract class BaseEnemy {
         entity.getAttribute(Attribute.GENERIC_MOVEMENT_SPEED).setBaseValue(speed);
         entity.getAttribute(Attribute.GENERIC_FOLLOW_RANGE).setBaseValue(64.0);
     }
+
+
+    public abstract int coinsToAwardOnDeath();
 
 }

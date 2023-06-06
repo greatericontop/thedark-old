@@ -30,4 +30,10 @@ public class Util {
         return (max - min) * Math.random() + min;
     }
 
+    public static int roundNumber(double number) {
+        int intPart = (int) number;
+        double fracPart = number - intPart;
+        return intPart + (Math.random() < fracPart ? 1 : 0);
+    }
+
 }

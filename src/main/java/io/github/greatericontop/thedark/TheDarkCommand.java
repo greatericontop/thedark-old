@@ -2,6 +2,7 @@ package io.github.greatericontop.thedark;
 
 import io.github.greatericontop.thedark.enemy.BasicZombie;
 import io.github.greatericontop.thedark.enemy.FatDebugZombie;
+import io.github.greatericontop.thedark.enemy.StandardZombie;
 import io.github.greatericontop.thedark.guns.GunType;
 import io.github.greatericontop.thedark.guns.GunUtil;
 import io.github.greatericontop.thedark.player.PlayerProfile;
@@ -50,6 +51,13 @@ public class TheDarkCommand implements CommandExecutor {
         }
         if (args[0].equals("spawnDebugZombie")) {
             plugin.getGameManager().spawnEnemy(FatDebugZombie.class, player.getLocation());
+            return true;
+        }
+        if (args[0].equals("spawnSomeEnemies")) {
+            for (int i = 0; i < 10; i++) {
+                plugin.getGameManager().spawnEnemy(BasicZombie.class, player.getLocation());
+                plugin.getGameManager().spawnEnemy(StandardZombie.class, player.getLocation());
+            }
             return true;
         }
         if (args[0].equals("addMe")) {
