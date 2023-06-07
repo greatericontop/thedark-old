@@ -9,6 +9,7 @@ import org.bukkit.entity.Player;
 import java.lang.reflect.InvocationTargetException;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
@@ -31,6 +32,7 @@ public class GameManager {
         return playerProfiles.get(uuid);
     }
 
+    @SuppressWarnings("WhileLoopReplaceableByForEach")
     public void tick() {
         // tick players
         for (PlayerProfile profile : playerProfiles.values()) {
@@ -38,7 +40,9 @@ public class GameManager {
             profile.updateInventory();
         }
         // tick enemies
-        for (BaseEnemy enemy : activeEnemies) {
+        Iterator<BaseEnemy> enemyIterator = activeEnemies.iterator();
+        while (enemyIterator.hasNext()) { // iterator is necessary here due to modifying :activeEnemies:
+            BaseEnemy enemy = enemyIterator.next();
             if (enemy.isDead()) {
                 Player killer = enemy.getEntity().getKiller();
                 if (killer != null) {
