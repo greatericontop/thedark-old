@@ -100,7 +100,7 @@ public class TheDarkCommand implements CommandExecutor {
         }
         if (args[0].equals("forceBuyGun")) {
             GunType toGive = GunType.valueOf(args[1]);
-            BuyGunManager.attemptBuy(toGive, player, player.getInventory().getHeldItemSlot());
+            BuyGunManager.attemptGive(toGive, player, player.getInventory().getHeldItemSlot());
             return true;
         }
 

@@ -1,24 +1,39 @@
 package io.github.greatericontop.thedark.menus;
 
 import io.github.greatericontop.thedark.guns.GunType;
+import io.github.greatericontop.thedark.player.PlayerProfile;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
 public class BuyGunManager {
 
-    public static void attemptBuy(GunType gunType, Player player, int requestedSlot) {
+    public static void buy(GunType gunType, PlayerProfile profile, Player player) {
+        int cost = gunType.getCost();
+        if (profile.coins < cost) {
+            player.sendMessage("§3You don't have enough money to buy this gun!");
+            return;
+        }
+        if (attemptGive(gunType, player, player.getInventory().getHeldItemSlot())) {
+            // only subtract coins if successful
+            profile.coins -= cost;
+        }
+    }
+
+    public static boolean attemptGive(GunType gunType, Player player, int requestedSlot) {
         if (requestedSlot < 1 || requestedSlot > 3) {
             player.sendMessage("§3You can only buy guns in your 3 slots!");
-            return;
+            return false;
         }
         // if the player has available space and tried to replace a gun, cancel
         if (getFirstSpace(player) != -1 && isPopulated(player.getInventory().getItem(requestedSlot))) {
             player.sendMessage("§3You have available slots. You don't need to replace a gun.");
-            return;
+            return false;
         }
         ItemStack gunItem = gunType.createItemStack();
         player.getInventory().setItem(requestedSlot, gunItem);
+        player.sendMessage("§3Successfully purchased your gun!");
+        return true;
     }
 
     public static void debugGiveGun(GunType gunType, Player player, Integer forceSlot) {
