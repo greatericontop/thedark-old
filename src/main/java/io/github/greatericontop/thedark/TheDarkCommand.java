@@ -5,6 +5,7 @@ import io.github.greatericontop.thedark.enemy.FatDebugZombie;
 import io.github.greatericontop.thedark.enemy.StandardZombie;
 import io.github.greatericontop.thedark.guns.GunType;
 import io.github.greatericontop.thedark.guns.GunUtil;
+import io.github.greatericontop.thedark.menus.BuyGunManager;
 import io.github.greatericontop.thedark.player.PlayerProfile;
 import io.github.greatericontop.thedark.menus.SignListener;
 import net.kyori.adventure.text.Component;
@@ -86,6 +87,15 @@ public class TheDarkCommand implements CommandExecutor {
                     Component.text(String.format("§7Fire Rate: §f%.2fs", gunType.getCooldownTicks()*0.05))
             ));
             player.getInventory().getItemInMainHand().setItemMeta(im);
+            return true;
+        }
+        if (args[0].equals("giveGun")) {
+            GunType toGive = GunType.valueOf(args[1]);
+            if (args.length < 3) {
+                BuyGunManager.giveGun(toGive, player, null);
+            } else {
+                BuyGunManager.giveGun(toGive, player, Integer.parseInt(args[2]));
+            }
             return true;
         }
 
