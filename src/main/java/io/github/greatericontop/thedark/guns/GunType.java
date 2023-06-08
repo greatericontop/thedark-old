@@ -11,28 +11,28 @@ import java.util.List;
 public enum GunType {
 
     PISTOL(
-            3.0, 11L, 125,
+            3.0, 11L, 125, 10,
             Material.WOODEN_HOE,
             "§fPistol",
             "§7A basic pistol."
     ),
 
     RIFLE(
-            4.0, 9L, 500,
+            4.0, 9L, 500, 30,
             Material.STONE_HOE,
             "§eRifle",
             "§7A high-powered rifle that fires quickly."
     ),
 
     SHOTGUN(
-            6.0, 25L, 400,
+            6.0, 25L, 400, 5,
             Material.IRON_SHOVEL,
             "§eShotgun",
             "§7This shotgun damages multiple enemies."
     ),
 
     SUPER_WEAPON(
-            20.0, 2L, 10,
+            20.0, 2L, 10, 64,
             Material.NETHERITE_HOE,
             "§cTHE SUPERWEAPON",
             "§4Need I say more?"
@@ -43,6 +43,7 @@ public enum GunType {
     private final double damage;
     private final long cooldownTicks;
     private final int cost;
+    private final int ammoSize;
 
     private final Material itemMaterial;
     private final Component itemName;
@@ -57,11 +58,15 @@ public enum GunType {
     public int getCost() {
         return cost;
     }
+    public int getAmmoSize() {
+        return ammoSize;
+    }
 
-    GunType(double damage, long cooldownTicks, int cost, Material itemMaterial, String itemName, String miniDescription) {
+    GunType(double damage, long cooldownTicks, int cost, int ammoSize, Material itemMaterial, String itemName, String miniDescription) {
         this.damage = damage;
         this.cooldownTicks = cooldownTicks;
         this.cost = cost;
+        this.ammoSize = ammoSize;
         this.itemMaterial = itemMaterial;
         this.itemName = Component.text(itemName);
         this.itemLore = List.of(
@@ -72,8 +77,8 @@ public enum GunType {
         );
     }
 
-    public ItemStack createItemStack() {
-        ItemStack stack = new ItemStack(itemMaterial, 1);
+    public ItemStack createFullyLoadedItemStack() {
+        ItemStack stack = new ItemStack(itemMaterial, ammoSize);
         ItemMeta im = stack.getItemMeta();
         im.displayName(itemName);
         im.lore(itemLore);

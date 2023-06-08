@@ -3,11 +3,14 @@ package io.github.greatericontop.thedark.guns;
 import io.github.greatericontop.thedark.TheDark;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
+import org.bukkit.event.Event;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.EquipmentSlot;
+import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.persistence.PersistentDataContainer;
 import org.bukkit.persistence.PersistentDataType;
@@ -27,12 +30,17 @@ public class ShootGunListener implements Listener {
         }
     }
 
-    @EventHandler()
+    @EventHandler(priority = EventPriority.HIGH) // runs later
     public void onRightClick(PlayerInteractEvent event) {
         if (event.getHand() != EquipmentSlot.HAND)  return;
         if (event.getAction() != Action.RIGHT_CLICK_AIR && event.getAction() != Action.RIGHT_CLICK_BLOCK)  return;
+        if (event.getAction() == Action.RIGHT_CLICK_BLOCK && event.useInteractedBlock() == Event.Result.DENY) {
+            // it doesn't run when cancelled by the SignListener event
+            return;
+        }
         Player player = event.getPlayer();
-        ItemMeta im = player.getInventory().getItemInMainHand().getItemMeta();
+        ItemStack stack = player.getInventory().getItemInMainHand();
+        ItemMeta im = stack.getItemMeta();
         if (im == null)  return;
         PersistentDataContainer pdc = im.getPersistentDataContainer();
         if (!pdc.has(GunUtil.GUN_KEY, PersistentDataType.STRING))  return;
@@ -40,6 +48,14 @@ public class ShootGunListener implements Listener {
         GunType gunType = GunType.valueOf(pdc.get(GunUtil.GUN_KEY, PersistentDataType.STRING));
         Map<UUID, Boolean> cooldowns = this.cooldowns.get(gunType);
         if (cooldowns.getOrDefault(player.getUniqueId(), false))  return;
+
+        int currentAmount = stack.getAmount();
+        if (currentAmount == 1) {
+            player.sendMessage("§7Placeholder for something else! Reloading!");
+            stack.setAmount(gunType.getAmmoSize());
+        } else {
+            stack.setAmount(currentAmount - 1);
+        }
 
         GunUtil.fireProjectile(gunType, player.getEyeLocation(), player.getEyeLocation().getDirection(), player, gunType.getDamage(), plugin);
         cooldowns.put(player.getUniqueId(), true);

@@ -40,7 +40,7 @@ public class BuyGunManager {
             player.sendMessage("§3You can only have 1 of each gun!");
             return false;
         }
-        ItemStack gunItem = gunType.createItemStack();
+        ItemStack gunItem = gunType.createFullyLoadedItemStack();
         player.getInventory().setItem(requestedSlot, gunItem);
         player.sendMessage("§3Successfully purchased your gun!");
         return true;
@@ -53,7 +53,7 @@ public class BuyGunManager {
             player.sendMessage("§3No slot was available and the gun give was not forced to a slot.");
             return;
         }
-        ItemStack gunItem = gunType.createItemStack();
+        ItemStack gunItem = gunType.createFullyLoadedItemStack();
         player.getInventory().setItem(slot, gunItem);
     }
 
