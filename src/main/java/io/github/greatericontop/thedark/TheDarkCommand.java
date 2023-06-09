@@ -3,12 +3,14 @@ package io.github.greatericontop.thedark;
 import io.github.greatericontop.thedark.enemy.BasicZombie;
 import io.github.greatericontop.thedark.enemy.FatDebugZombie;
 import io.github.greatericontop.thedark.enemy.StandardZombie;
+import io.github.greatericontop.thedark.guns.BuyGunManager;
 import io.github.greatericontop.thedark.guns.GunType;
 import io.github.greatericontop.thedark.guns.GunUtil;
-import io.github.greatericontop.thedark.guns.BuyGunManager;
-import io.github.greatericontop.thedark.player.PlayerProfile;
 import io.github.greatericontop.thedark.menus.SignListener;
+import io.github.greatericontop.thedark.player.PlayerProfile;
 import net.kyori.adventure.text.Component;
+import org.bukkit.Bukkit;
+import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.Sign;
@@ -18,6 +20,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.persistence.PersistentDataType;
+import org.bukkit.util.Vector;
 
 import java.util.Arrays;
 
@@ -59,6 +62,18 @@ public class TheDarkCommand implements CommandExecutor {
                 plugin.getGameManager().spawnEnemy(BasicZombie.class, player.getLocation());
                 plugin.getGameManager().spawnEnemy(StandardZombie.class, player.getLocation());
             }
+            return true;
+        }
+        if (args[0].equals("spawnRandomAssault")) {
+            player.sendMessage("§3Assault begins in 10 seconds.");
+            Location savedLoc = player.getLocation();
+            Bukkit.getScheduler().runTaskLater(plugin, () -> debug_spawnEnemies(3, 1, savedLoc), 200L);
+            Bukkit.getScheduler().runTaskLater(plugin, () -> debug_spawnEnemies(5, 2, savedLoc), 600L);
+            Bukkit.getScheduler().runTaskLater(plugin, () -> debug_spawnEnemies(10, 5, savedLoc), 1000L);
+            Bukkit.getScheduler().runTaskLater(plugin, () -> debug_spawnEnemies(10, 10, savedLoc), 1600L);
+            Bukkit.getScheduler().runTaskLater(plugin, () -> debug_spawnEnemies(10, 10, savedLoc), 2200L);
+            Bukkit.getScheduler().runTaskLater(plugin, () -> player.sendMessage("§3This is the last wave!"), 2700L);
+            Bukkit.getScheduler().runTaskLater(plugin, () -> debug_spawnEnemies(20, 15, savedLoc), 2800L);
             return true;
         }
         if (args[0].equals("addMe")) {
@@ -105,6 +120,17 @@ public class TheDarkCommand implements CommandExecutor {
         }
 
         return false;
+    }
+
+    private void debug_spawnEnemies(int count1, int count2, Location loc) {
+        for (int i = 0; i < count1; i++) {
+            Location adjustedLoc = loc.clone().add(new Vector(4 * (Math.random() - 0.5), 0, 4 * (Math.random() - 0.5)));
+            plugin.getGameManager().spawnEnemy(BasicZombie.class, adjustedLoc);
+        }
+        for (int i = 0; i < count2; i++) {
+            Location adjustedLoc = loc.clone().add(new Vector(4 * (Math.random() - 0.5), 0, 4 * (Math.random() - 0.5)));
+            plugin.getGameManager().spawnEnemy(StandardZombie.class, adjustedLoc);
+        }
     }
 
 }
