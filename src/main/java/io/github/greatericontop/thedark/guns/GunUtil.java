@@ -65,6 +65,20 @@ public class GunUtil implements Listener {
         sourceLoc.getWorld().playSound(sourceLoc, Sound.ENTITY_GENERIC_EXPLODE, 0.225F, 1.0F);
     }
 
+    public static int getDamagePositionBelowCurrent(int maxDurability, int ticksToRefill, int currentDamage) {
+        // we subtract 0.5 here because the initial damage will be :maxDurability - 1:, so
+        // then it will successfully go down to the next one on the next tick
+        double step = (maxDurability - 0.5) / ((double) ticksToRefill);
+        // iterative approach is slow but good enough
+        for (double damageAmount = 0.0; damageAmount < maxDurability; damageAmount += step) {
+            // (add compensation for floating point problems, with slightly more for the first one)
+            if (damageAmount + 0.0000015 >= currentDamage) {
+                return (int) (damageAmount - step + 0.000001);
+            }
+        }
+        throw new RuntimeException("currentDamage is greater than last value of damageAmount (" + currentDamage + ")");
+    }
+
     @EventHandler()
     public void onDamageByPlayer(EntityDamageByEntityEvent event) {
         if (!(event.getDamager() instanceof Player player))  return;

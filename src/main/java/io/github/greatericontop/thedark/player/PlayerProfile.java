@@ -1,12 +1,17 @@
 package io.github.greatericontop.thedark.player;
 
 import io.github.greatericontop.thedark.Util;
+import io.github.greatericontop.thedark.guns.GunType;
+import io.github.greatericontop.thedark.guns.GunUtil;
 import io.github.greatericontop.thedark.menus.ArmorBuyListener;
 import io.github.greatericontop.thedark.menus.SwordBuyListener;
 import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.Damageable;
+import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.persistence.PersistentDataType;
 
 public class PlayerProfile {
     private Player player;
@@ -36,6 +41,29 @@ public class PlayerProfile {
     }
 
     public void updateInventory() {
+        // update durability (during reloading) of guns
+        for (int slot = 1; slot <= 3; slot++) {
+            ItemStack stack = player.getInventory().getItem(slot);
+            if (stack == null || stack.getType() == Material.LIGHT_GRAY_DYE)  continue;
+            ItemMeta genericIM = stack.getItemMeta();
+            if (genericIM == null)  continue;
+            if (!genericIM.getPersistentDataContainer().has(GunUtil.GUN_KEY, PersistentDataType.STRING))  continue;
+            Damageable im = (Damageable) genericIM;
+            if (im.getDamage() > 0) {
+                // perform 1 tick worth of reloading
+                GunType gunType = GunType.valueOf(im.getPersistentDataContainer().get(GunUtil.GUN_KEY, PersistentDataType.STRING));
+                int newDamageAmount = GunUtil.getDamagePositionBelowCurrent(gunType.getMaxDurability(), gunType.getRechargeTicks(), im.getDamage());
+                if (newDamageAmount <= 0) {
+                    if (newDamageAmount < 0)  throw new RuntimeException();
+                    stack.setAmount(gunType.getAmmoSize());
+                    im.setDamage(0);
+                } else {
+                    im.setDamage(newDamageAmount);
+                }
+                stack.setItemMeta(im);
+            }
+        }
+
         // SWORD
         Material swordMaterial = SwordBuyListener.SWORD_MATERIALS[swordTier - 1];
         ItemStack sword = new ItemStack(swordMaterial, 1);

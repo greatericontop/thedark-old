@@ -11,28 +11,28 @@ import java.util.List;
 public enum GunType {
 
     PISTOL(
-            3.0, 11L, 125, 10,
+            3.0, 11L, 125, 10, 30,
             Material.WOODEN_HOE,
             "§fPistol",
             "§7A basic pistol."
     ),
 
     RIFLE(
-            4.0, 9L, 500, 30,
+            4.0, 9L, 500, 30, 30,
             Material.STONE_HOE,
             "§eRifle",
             "§7A high-powered rifle that fires quickly."
     ),
 
     SHOTGUN(
-            6.0, 25L, 400, 5,
+            6.0, 25L, 400, 5, 30,
             Material.IRON_SHOVEL,
             "§eShotgun",
             "§7This shotgun damages multiple enemies."
     ),
 
     SUPER_WEAPON(
-            20.0, 2L, 10, 64,
+            20.0, 2L, 10, 64, 30,
             Material.NETHERITE_HOE,
             "§cTHE SUPERWEAPON",
             "§4Need I say more?"
@@ -44,6 +44,7 @@ public enum GunType {
     private final long cooldownTicks;
     private final int cost;
     private final int ammoSize;
+    private final int rechargeTicks;
 
     private final Material itemMaterial;
     private final Component itemName;
@@ -61,19 +62,24 @@ public enum GunType {
     public int getAmmoSize() {
         return ammoSize;
     }
+    public int getRechargeTicks() {
+        return rechargeTicks;
+    }
 
-    GunType(double damage, long cooldownTicks, int cost, int ammoSize, Material itemMaterial, String itemName, String miniDescription) {
+    GunType(double damage, long cooldownTicks, int cost, int ammoSize, int rechargeTicks, Material itemMaterial, String itemName, String miniDescription) {
         this.damage = damage;
         this.cooldownTicks = cooldownTicks;
         this.cost = cost;
         this.ammoSize = ammoSize;
+        this.rechargeTicks = rechargeTicks;
         this.itemMaterial = itemMaterial;
         this.itemName = Component.text(itemName);
         this.itemLore = List.of(
                 Component.text(miniDescription),
                 Component.text(""),
-                Component.text(String.format("§7Damage: §f%.0f", damage)),
-                Component.text(String.format("§7Cooldown: §f%.2fs", cooldownTicks*0.05))
+                Component.text(String.format("§7Damage: §c%.0f", damage)),
+                Component.text(String.format("§7Cooldown: §f%.2fs", cooldownTicks*0.05)),
+                Component.text(String.format("§7Capacity: §f%d", ammoSize))
         );
     }
 
@@ -85,6 +91,10 @@ public enum GunType {
         im.getPersistentDataContainer().set(GunUtil.GUN_KEY, PersistentDataType.STRING, this.name());
         stack.setItemMeta(im);
         return stack;
+    }
+
+    public int getMaxDurability() {
+        return itemMaterial.getMaxDurability();
     }
 
 }

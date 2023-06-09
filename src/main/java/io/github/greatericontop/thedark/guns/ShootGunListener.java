@@ -11,6 +11,7 @@ import org.bukkit.event.block.Action;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.Damageable;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.persistence.PersistentDataContainer;
 import org.bukkit.persistence.PersistentDataType;
@@ -44,15 +45,20 @@ public class ShootGunListener implements Listener {
         if (im == null)  return;
         PersistentDataContainer pdc = im.getPersistentDataContainer();
         if (!pdc.has(GunUtil.GUN_KEY, PersistentDataType.STRING))  return;
-
         GunType gunType = GunType.valueOf(pdc.get(GunUtil.GUN_KEY, PersistentDataType.STRING));
         Map<UUID, Boolean> cooldowns = this.cooldowns.get(gunType);
         if (cooldowns.getOrDefault(player.getUniqueId(), false))  return;
+        Damageable damageableIM = (Damageable) im;
 
+        if (damageableIM.getDamage() > 0) { // in the process of a reload
+            return;
+        }
         int currentAmount = stack.getAmount();
         if (currentAmount == 1) {
-            player.sendMessage("§7Placeholder for something else! Reloading!");
-            stack.setAmount(gunType.getAmmoSize());
+            // durability set close to 0 so that it will be exactly repaired after the desired number of ticks
+            damageableIM.setDamage(gunType.getMaxDurability() - 1);
+            stack.setItemMeta(damageableIM);
+            stack.setAmount(1);
         } else {
             stack.setAmount(currentAmount - 1);
         }
