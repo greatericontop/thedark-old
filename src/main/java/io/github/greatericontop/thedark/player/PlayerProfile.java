@@ -33,6 +33,9 @@ public class PlayerProfile {
     public Player getPlayer() {
         return player;
     }
+    public void setPlayer(Player player) {
+        this.player = player;
+    }
 
     private void initializePlayer() {
         for (int i = 1; i <= 3; i++) {
