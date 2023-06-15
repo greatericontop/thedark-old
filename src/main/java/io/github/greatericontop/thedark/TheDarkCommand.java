@@ -1,14 +1,13 @@
 package io.github.greatericontop.thedark;
 
 import io.github.greatericontop.thedark.enemy.BasicZombie;
+import io.github.greatericontop.thedark.enemy.EmeraldVindicator;
 import io.github.greatericontop.thedark.enemy.FatDebugZombie;
 import io.github.greatericontop.thedark.enemy.StandardZombie;
 import io.github.greatericontop.thedark.guns.BuyGunManager;
 import io.github.greatericontop.thedark.guns.GunType;
-import io.github.greatericontop.thedark.guns.GunUtil;
 import io.github.greatericontop.thedark.menus.SignListener;
 import io.github.greatericontop.thedark.player.PlayerProfile;
-import net.kyori.adventure.text.Component;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -18,11 +17,8 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.persistence.PersistentDataType;
 import org.bukkit.util.Vector;
-
-import java.util.Arrays;
 
 public class TheDarkCommand implements CommandExecutor {
 
@@ -76,6 +72,10 @@ public class TheDarkCommand implements CommandExecutor {
             Bukkit.getScheduler().runTaskLater(plugin, () -> debug_spawnEnemies(20, 15, savedLoc), 2800L);
             return true;
         }
+        if (args[0].equals("spawnVindicator")) {
+            plugin.getGameManager().spawnEnemy(EmeraldVindicator.class, player.getLocation());
+            return true;
+        }
         if (args[0].equals("addMe")) {
             PlayerProfile profile = new PlayerProfile(player);
             profile.coins = Integer.parseInt(args[1]);
@@ -91,17 +91,6 @@ public class TheDarkCommand implements CommandExecutor {
             Sign sign = (Sign) lookingAt.getState(false); // get real state as we're going to modify it
             sign.getPersistentDataContainer().set(SignListener.SIGN_TYPE_KEY, PersistentDataType.STRING, args[1]);
             player.sendMessage("§3Set your sign to be: §7" + args[1]);
-            return true;
-        }
-        if (args[0].equals("makeGun")) {
-            ItemMeta im = player.getInventory().getItemInMainHand().getItemMeta();
-            GunType gunType = GunType.valueOf(args[1]);
-            im.getPersistentDataContainer().set(GunUtil.GUN_KEY, PersistentDataType.STRING, args[1]);
-            im.lore(Arrays.asList(
-                    Component.text(String.format("§7Damage: §f%.0f", gunType.getDamage())),
-                    Component.text(String.format("§7Fire Rate: §f%.2fs", gunType.getCooldownTicks()*0.05))
-            ));
-            player.getInventory().getItemInMainHand().setItemMeta(im);
             return true;
         }
         if (args[0].equals("giveGun")) {

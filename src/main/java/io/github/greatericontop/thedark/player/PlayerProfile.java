@@ -5,6 +5,7 @@ import io.github.greatericontop.thedark.guns.GunType;
 import io.github.greatericontop.thedark.guns.GunUtil;
 import io.github.greatericontop.thedark.menus.ArmorBuyListener;
 import io.github.greatericontop.thedark.menus.SwordBuyListener;
+import net.kyori.adventure.text.Component;
 import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
@@ -17,6 +18,8 @@ public class PlayerProfile {
     private Player player;
 
     public int coins;
+    public int emeralds;
+
     public int armorLevel;
     public int armorProtectionLevel;
     public int swordTier;
@@ -24,6 +27,7 @@ public class PlayerProfile {
     public PlayerProfile(Player player) {
         this.player = player;
         coins = 0;
+        emeralds = 0;
         armorLevel = 0;
         armorProtectionLevel = 0;
         swordTier = 1;
@@ -39,8 +43,15 @@ public class PlayerProfile {
 
     private void initializePlayer() {
         for (int i = 1; i <= 3; i++) {
-                player.getInventory().setItem(i, Util.createItemStack(Material.LIGHT_GRAY_DYE, 1, "§7Empty Slot", "§fBuy a gun!"));
-            }
+            player.getInventory().setItem(i, Util.createItemStack(Material.LIGHT_GRAY_DYE, 1, "§7Empty Slot", "§fBuy a gun!"));
+        }
+    }
+
+    public Component getActionBar() {
+        if (emeralds == 0) {
+            return Component.text(String.format("§6Coins: %,d", coins));
+        }
+        return Component.text(String.format("§6Coins: %,d    §2%d Emerald%s", coins, emeralds, emeralds == 1 ? "" : "s"));
     }
 
     public void updateInventory() {

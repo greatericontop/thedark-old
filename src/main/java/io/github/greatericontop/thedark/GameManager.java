@@ -1,9 +1,11 @@
 package io.github.greatericontop.thedark;
 
 import io.github.greatericontop.thedark.enemy.BaseEnemy;
+import io.github.greatericontop.thedark.enemy.EmeraldVindicator;
 import io.github.greatericontop.thedark.player.PlayerProfile;
 import net.kyori.adventure.text.Component;
 import org.bukkit.Location;
+import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 
 import java.lang.reflect.InvocationTargetException;
@@ -34,21 +36,25 @@ public class GameManager {
     public void tick() {
         // tick players
         for (PlayerProfile profile : playerProfiles.values()) {
-            profile.getPlayer().sendActionBar(Component.text(String.format("§6Coins: %,d", profile.coins)));
+            profile.getPlayer().sendActionBar(profile.getActionBar());
             profile.updateInventory();
         }
         // tick enemies
         for (BaseEnemy enemy : activeEnemies) {
-            if (enemy.isDead()) {
-                Player killer = enemy.getEntity().getKiller();
-                if (killer != null) {
-                    PlayerProfile profile = getPlayerProfile(killer);
-                    if (profile != null) {
-                        int coins = enemy.coinsToAwardOnDeath();
-                        profile.coins += coins;
-                        killer.sendMessage(Component.text(String.format("§6+%d coins (kill)", coins)));
-                    }
-                }
+            if (!enemy.isDead())  continue;
+            Player killer = enemy.getEntity().getKiller();
+            if (killer == null)  continue;
+            PlayerProfile profile = getPlayerProfile(killer);
+            if (profile == null)  continue;
+
+            int coins = enemy.coinsToAwardOnDeath();
+            profile.coins += coins;
+            killer.sendMessage(Component.text(String.format("§6+%d coins (kill)", coins)));
+
+            if (enemy.getClass() == EmeraldVindicator.class) {
+                profile.emeralds += 1;
+                killer.sendMessage(Component.text("§2+1 Emerald"));
+                killer.playSound(killer.getLocation(), Sound.ENTITY_PLAYER_LEVELUP, 1.0F, 1.0F);
             }
         }
         // remove dead enemies AFTER to avoid junk with iterators & ConcurrentModificationException
