@@ -73,7 +73,7 @@ public enum GunType {
 
     ROCKET_LAUNCHER(
             // :cooldownTicks: is set to the reload speed mainly to show the player the reload time on the tooltip
-            0, 20.0, 80L, -1, 1,
+            0, 17.5, 140L, -1, 1,
             GunClassification.ROCKET_LAUNCHER,
             Material.NETHERITE_PICKAXE,
             "§bRocket Launcher"
