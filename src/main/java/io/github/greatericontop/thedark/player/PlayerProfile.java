@@ -1,6 +1,6 @@
 package io.github.greatericontop.thedark.player;
 
-import io.github.greatericontop.thedark.Util;
+import io.github.greatericontop.thedark.util.Util;
 import io.github.greatericontop.thedark.guns.GunType;
 import io.github.greatericontop.thedark.guns.GunUtil;
 import io.github.greatericontop.thedark.menus.ArmorBuyListener;

@@ -1,4 +1,4 @@
-package io.github.greatericontop.thedark;
+package io.github.greatericontop.thedark.util;
 
 import net.kyori.adventure.text.Component;
 import org.bukkit.Material;

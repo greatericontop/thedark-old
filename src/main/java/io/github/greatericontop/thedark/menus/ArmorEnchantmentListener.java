@@ -1,7 +1,7 @@
 package io.github.greatericontop.thedark.menus;
 
 import io.github.greatericontop.thedark.TheDark;
-import io.github.greatericontop.thedark.Util;
+import io.github.greatericontop.thedark.util.Util;
 import io.github.greatericontop.thedark.player.PlayerProfile;
 import net.kyori.adventure.text.Component;
 import org.bukkit.Bukkit;

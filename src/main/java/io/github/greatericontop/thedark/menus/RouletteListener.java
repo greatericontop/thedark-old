@@ -1,7 +1,7 @@
 package io.github.greatericontop.thedark.menus;
 
 import io.github.greatericontop.thedark.TheDark;
-import io.github.greatericontop.thedark.Util;
+import io.github.greatericontop.thedark.util.Util;
 import io.github.greatericontop.thedark.player.PlayerProfile;
 import net.kyori.adventure.text.Component;
 import org.bukkit.Bukkit;
@@ -59,26 +59,28 @@ public class RouletteListener extends GenericMenu {
         }
         profile.emeralds -= 1;
         player.closeInventory();
-        int number = ThreadLocalRandom.current().nextInt(16);
-        if (number < 4) { // weight 4
-            player.sendMessage("§cSorry, you got nothing.");
-            Util.playFailSound(player);
-        } else if (number < 8) { // weight 4
-            player.sendMessage("§aYou received §6500 coins§a!");
-            profile.coins += 500;
-            Util.playSuccessSound(player);
-        } else if (number < 11) { // weight 3
-            player.sendMessage("§aYou received §61,000 coins§a!");
-            profile.coins += 1000;
-            Util.playSuccessSound(player);
-        } else if (number < 14) { // weight 3
-            player.sendMessage("§aYou received §62,000 coins§a!");
-            profile.coins += 2000;
-            Util.playSuccessSound(player);
-        } else if (number < 16) {
-            player.sendMessage("§cPlaceholder. You should get a weapon.");
-            Util.playSuccessSound(player);
-        }
+        int number = ThreadLocalRandom.current().nextInt(2);
+        plugin.rouletteRewardClaimListener.openMenu(profile, number); // TODO: DEBUG
+//        if (number < 4) { // weight 4
+//            player.sendMessage("§cSorry, you got nothing.");
+//            Util.playFailSound(player);
+//        } else if (number < 8) { // weight 4
+//            player.sendMessage("§aYou received §6500 coins§a!");
+//            profile.coins += 500;
+//            Util.playSuccessSound(player);
+//        } else if (number < 11) { // weight 3
+//            player.sendMessage("§aYou received §61,000 coins§a!");
+//            profile.coins += 1000;
+//            Util.playSuccessSound(player);
+//        } else if (number < 14) { // weight 3
+//            player.sendMessage("§aYou received §62,000 coins§a!");
+//            profile.coins += 2000;
+//            Util.playSuccessSound(player);
+//        } else {
+//            player.sendMessage("§cPlaceholder. You should get a weapon.");
+//            plugin.rouletteRewardClaimListener.openMenu(profile, number - 14);
+//            Util.playSuccessSound(player);
+//        }
     }
 
 }
