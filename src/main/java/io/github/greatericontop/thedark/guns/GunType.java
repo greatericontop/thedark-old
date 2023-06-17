@@ -13,6 +13,8 @@ import java.util.List;
 public enum GunType {
 
     // basic
+    // "common", "uncommon" with star
+    // max 1 star
 
     PISTOL(
             0, 4.0, 11L, 125, 10,
@@ -32,60 +34,115 @@ public enum GunType {
             0, 5.0, 8L, 500, 30,
             GunClassification.RIFLE,
             Material.STONE_HOE,
-            "§eRifle"
+            "§fRifle"
 
     ),
     RIFLE_1STAR(
             1, 6.0, 7L, -1, 30,
             GunClassification.RIFLE,
             Material.STONE_HOE,
-            "§bRifle §9⚝"
+            "§eRifle §9⚝"
     ),
 
     SHOTGUN(
             0, 4.0, 25L, 400, 5,
             GunClassification.SHOTGUN,
             Material.IRON_SHOVEL,
-            "§eShotgun"
+            "§fShotgun"
     ),
     SHOTGUN_1STAR(
             1, 5.0, 25L, -1, 6,
             GunClassification.SHOTGUN,
             Material.IRON_SHOVEL,
-            "§bShotgun §9⚝"
+            "§eShotgun §9⚝"
     ),
 
     // better
+    // "uncommon", "rare" with star
+    // max 2 stars
 
     FLAMETHROWER(
             0, 2.5, 3L, -1, 48,
             GunClassification.FLAMETHROWER,
             Material.GOLDEN_SHOVEL,
-            "§bFlamethrower"
+            "§eFlamethrower"
+    ),
+    FLAMETHROWER_1STAR(
+            1, 3.0, 3L, -1, 64,
+            GunClassification.FLAMETHROWER,
+            Material.GOLDEN_SHOVEL,
+            "§bFlamethrower §9⚝"
+    ),
+    FLAMETHROWER_2STAR(
+            2, 3.5, 3L, -1, 70,
+            GunClassification.FLAMETHROWER,
+            Material.GOLDEN_SHOVEL,
+            "§bFlamethrower §9⚝§4⚝"
     ),
 
+    // base stats of Midas Pistol same as normal pistol
     MIDAS_PISTOL(
             0, 4.0, 11L, -1, 10,
             GunClassification.MIDAS_PISTOL,
             Material.GOLDEN_HOE,
-            "§bMidas Pistol"
+            "§eMidas Pistol"
     ),
+    MIDAS_PISTOL_1STAR(
+            1, 5.0, 11L, -1, 16,
+            GunClassification.MIDAS_PISTOL,
+            Material.GOLDEN_HOE,
+            "§bMidas Pistol §9⚝"
+    ),
+    MIDAS_PISTOL_2STAR(
+            2, 6.5, 11L, -1, 18,
+            GunClassification.MIDAS_PISTOL,
+            Material.GOLDEN_HOE,
+            "§bMidas Pistol §9⚝§4⚝"
+    ),
+
+    // even better
+    // "rare", "epic" with star
+    // max 3 stars
 
     ROCKET_LAUNCHER(
             // :cooldownTicks: is set to the reload speed mainly to show the player the reload time on the tooltip
-            0, 17.5, 140L, -1, 1,
+            0, 16.0, 140L, -1, 1,
             GunClassification.ROCKET_LAUNCHER,
             Material.NETHERITE_PICKAXE,
             "§bRocket Launcher"
+    ),
+    ROCKET_LAUNCHER_1STAR(
+            1, 20.0, 140L, -1, 1,
+            GunClassification.ROCKET_LAUNCHER,
+            Material.NETHERITE_PICKAXE,
+            "§dRocket Launcher §9⚝"
+    ),
+    ROCKET_LAUNCHER_2STAR(
+            2, 24.0, 140L, -1, 1,
+            GunClassification.ROCKET_LAUNCHER,
+            Material.NETHERITE_PICKAXE,
+            "§dRocket Launcher §9⚝§4⚝"
+    ),
+    ROCKET_LAUNCHER_3STAR(
+            3, 28.0, 140L, -1, 1,
+            GunClassification.ROCKET_LAUNCHER,
+            Material.NETHERITE_PICKAXE,
+            "§dRocket Launcher §9⚝§4⚝§2⚝"
     ),
 
     // other
 
     SUPER_WEAPON(
-            0, 20.0, 1L, 10, 64,
+            0, 20.0, 1L, 10, 125,
             GunClassification.SUPER_WEAPON,
             Material.NETHERITE_HOE,
             "§dTHE SUPERWEAPON"
+    ),
+    SUPER_WEAPON_4STAR(
+            4, 200.0, 1L, 10, 125,
+            GunClassification.SUPER_WEAPON,
+            Material.NETHERITE_HOE,
+            "§dTHE SUPERWEAPON §9⚝§4⚝§2⚝§5⚝"
     ),
 
     ;
@@ -164,7 +221,7 @@ public enum GunType {
                 capacityMessage = String.format("§7Capacity: §8%d §7-> §f%d", root.getAmmoSize(), ammoSize);
             }
             return List.of(
-                    Component.text(String.format("§6§l%d Enhancement Star", enhancementStarCount)),
+                    Component.text(String.format("§6§l%d Star", enhancementStarCount)),
                     Component.text(""),
                     Component.text(classification.getMiniDescription()),
                     Component.text(""),
