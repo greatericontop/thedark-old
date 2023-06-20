@@ -60,14 +60,15 @@ public class RouletteRewardClaimListener implements Listener {
             player.sendMessage("§cYou don't have a profile!");
             return;
         }
-        if (event.getClick() != ClickType.NUMBER_KEY) {
-            player.sendMessage("§cYou need to press a hotkey (hotbar button)!");
-            Util.playFailSound(player);
-            return;
-        }
         int winKey = event.getInventory().getItem(0).getItemMeta().getPersistentDataContainer().get(WIN_KEY, PersistentDataType.INTEGER);
         if (profile.coins < RouletteLootTable.getCost(winKey)) {
             player.sendMessage("§cYou can't afford this!");
+            Util.playFailSound(player);
+            return;
+        }
+
+        if (RouletteLootTable.requiresHotBarClick(winKey) && event.getClick() != ClickType.NUMBER_KEY) {
+            player.sendMessage("§cYou need to press a hotkey (hotbar button)!");
             Util.playFailSound(player);
             return;
         }

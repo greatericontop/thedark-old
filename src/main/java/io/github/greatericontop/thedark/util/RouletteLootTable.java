@@ -19,6 +19,15 @@ public class RouletteLootTable {
         }[winKey];
     }
 
+    public static boolean requiresHotBarClick(int winKey) {
+        return new boolean[] {
+                true,
+                true,
+                true,
+                false, // sword sharpness upgrade
+        }[winKey];
+    }
+
     public static ItemStack getIcon(int winKey) {
         switch (winKey) {
             case 0 -> {
