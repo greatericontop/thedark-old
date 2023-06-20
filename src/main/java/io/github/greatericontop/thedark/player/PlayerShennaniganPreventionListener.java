@@ -66,7 +66,14 @@ public class PlayerShennaniganPreventionListener implements Listener {
     public void onOffhandSwap(PlayerSwapHandItemsEvent event) {
         PlayerProfile profile = plugin.getGameManager().getPlayerProfile(event.getPlayer().getUniqueId());
         if (profile != null) {
-            event.setCancelled(true);
+            if (event.getOffHandItem() != null && event.getMainHandItem() != null
+                    && event.getOffHandItem().getType() == event.getMainHandItem().getType()) {
+                // if the offhand and mainhand items are the same type, most likely our plugin reset the item in
+                // the main hand before the event was called (and the item was duplicated)
+                event.setOffHandItem(null);
+            } else {
+                event.setCancelled(true);
+            }
         }
     }
 
