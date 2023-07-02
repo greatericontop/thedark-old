@@ -1,7 +1,7 @@
 package io.github.greatericontop.thedark.rounds.operation;
 
 import io.github.greatericontop.thedark.enemy.BaseEnemy;
-import org.bukkit.scheduler.BukkitRunnable;
+import org.bukkit.Bukkit;
 
 public class SpawnOneAtATime extends BaseOperation {
 
@@ -24,18 +24,16 @@ public class SpawnOneAtATime extends BaseOperation {
 
     @Override
     public void actuallyExecute(OperationContext ctx) {
-        final int[] numberRemaining = {count};
-        new BukkitRunnable() {
-            public void run() {
-                if (numberRemaining[0] <= 0) {
-                    cancel();
-                    return;
-                }
-                ctx.plugin().getGameManager().spawnEnemy(enemyClass, ctx.location());
-                numberRemaining[0]--;
-                this.runTaskLater(ctx.plugin(), spacing);
-            }
-        }.runTaskLater(ctx.plugin(), 1L);
+        Bukkit.getScheduler().runTaskLater(ctx.plugin(), () -> spawnOne(ctx, count), 1L);
+    }
+
+    private void spawnOne(OperationContext ctx, int numberRemaining) {
+        if (numberRemaining <= 0) {
+            return;
+        }
+        ctx.plugin().getGameManager().spawnEnemy(enemyClass, ctx.location());
+        final int numberRemainingNext = numberRemaining - 1;
+        Bukkit.getScheduler().runTaskLater(ctx.plugin(), () -> spawnOne(ctx, numberRemainingNext), spacing);
     }
 
 }
