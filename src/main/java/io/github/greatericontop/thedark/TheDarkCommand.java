@@ -8,6 +8,8 @@ import io.github.greatericontop.thedark.guns.BuyGunManager;
 import io.github.greatericontop.thedark.guns.GunType;
 import io.github.greatericontop.thedark.menus.SignListener;
 import io.github.greatericontop.thedark.player.PlayerProfile;
+import io.github.greatericontop.thedark.rounds.RoundUtil;
+import io.github.greatericontop.thedark.rounds.operation.OperationContext;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -112,6 +114,11 @@ public class TheDarkCommand implements CommandExecutor {
         if (args[0].equals("emerald")) {
             plugin.getGameManager().playerProfiles.get(player.getUniqueId()).emeralds += 1;
             return true;
+        }
+        if (args[0].equals("startRoundHere")) {
+            int round = Integer.parseInt(args[1]);
+            player.sendMessage("§7Starting round!");
+            RoundUtil.executeRound(new OperationContext(plugin, player.getLocation()), round);
         }
 
         return false;
