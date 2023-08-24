@@ -55,8 +55,8 @@ public class EnhancementListener extends GenericMenu {
             player.sendMessage("§cThis gun is already maxed out!");
             return;
         }
-
         int coinCost = ENHANCEMENT_COSTS[gunType.getEnhancementStarCount()];
+
         ItemStack info = Util.createItemStack(Material.DIAMOND, 1, "§bEnhancement",
                 String.format("§6%d §b-> §6§l%d", gunType.getEnhancementStarCount(), gunType.getEnhancementStarCount() + 1),
                 "§fThis gun will gain a large, permanent boost in stats!",
@@ -65,8 +65,8 @@ public class EnhancementListener extends GenericMenu {
         ItemStack enhancedGunPreview = gunClassification.getChildGun(gunType.getEnhancementStarCount() + 1).createFullyLoadedItemStack();
         ItemStack clickHere = Util.createItemStack(Material.ANVIL, 1, "§bClick here to enhance!");
         Inventory gui = Bukkit.createInventory(player, 9, INVENTORY_NAME);
-        gui.setItem(1, info);
-        gui.setItem(5, enhancedGunPreview);
+        gui.setItem(0, info);
+        gui.setItem(4, enhancedGunPreview);
         gui.setItem(8, clickHere);
         player.openInventory(gui);
     }
@@ -84,10 +84,39 @@ public class EnhancementListener extends GenericMenu {
             return;
         }
 
-        // Calculate stuff
+        // Calculate stuff (again) (also in case the player switched their hotbar somehow which normally shouldn't be possible)
+        ItemStack heldItem = player.getInventory().getItemInMainHand();
+        ItemMeta im = heldItem.getItemMeta();
+        if (im == null) {
+            player.sendMessage("§cThis should never happen: null ItemMeta");
+            player.closeInventory();
+            return;
+        }
+        PersistentDataContainer pdc = im.getPersistentDataContainer();
+        if (!pdc.has(GunUtil.GUN_KEY, PersistentDataType.STRING)) {
+            player.sendMessage("§cThis should never happen: no pdc key GUN_KEY");
+            player.closeInventory();
+            return;
+        }
+        GunType gunType = GunType.valueOf(pdc.get(GunUtil.GUN_KEY, PersistentDataType.STRING));
+        GunClassification gunClassification = gunType.getClassification();
+        if (gunClassification.getMaxEnhancementStars() == gunType.getEnhancementStarCount()) {
+            player.sendMessage("§cThis should never happen: gun already maxed out");
+            player.closeInventory();
+            return;
+        }
+        int coinCost = ENHANCEMENT_COSTS[gunType.getEnhancementStarCount()];
+        if (profile.coins < coinCost) {
+            player.sendMessage("§cYou don't have enough coins!");
+            player.closeInventory();
+            return;
+        }
+        ItemStack nextGun = gunClassification.getChildGun(gunType.getEnhancementStarCount() + 1).createFullyLoadedItemStack();
 
-        // ...
-
+        player.getInventory().setItemInMainHand(nextGun);
+        profile.coins -= coinCost;
+        player.sendMessage(String.format("§aYou enhanced your gun! It is now level §6§l%d§a!", gunType.getEnhancementStarCount() + 1));
+        player.closeInventory();
     }
 
 }
