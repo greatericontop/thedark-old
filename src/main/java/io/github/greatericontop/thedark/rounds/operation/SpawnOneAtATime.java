@@ -10,8 +10,8 @@ public class SpawnOneAtATime extends BaseOperation {
     private final int count;
     private final int spacing;
 
-    public SpawnOneAtATime(double offsetSeconds, Class<? extends BaseEnemy> enemyClass, int count, int spacing) {
-        this.offset = (int) (offsetSeconds * 20);
+    public SpawnOneAtATime(int offsetTicks, Class<? extends BaseEnemy> enemyClass, int count, int spacing) {
+        this.offset = offsetTicks;
         this.enemyClass = enemyClass;
         this.count = count;
         this.spacing = spacing;
