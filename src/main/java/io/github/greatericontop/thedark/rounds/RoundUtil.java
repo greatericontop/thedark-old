@@ -45,8 +45,8 @@ public class RoundUtil {
             double z = (double) locationObject.get(3);
             locations.add(new Location(world, x, y, z));
         }
-        //OperationContext ctx = new OperationContext(plugin);
-        //executeRound(ctx, roundNumber);
+        OperationContext ctx = new OperationContext(plugin, locations.toArray(new Location[0]));
+        executeRound(ctx, roundNumber);
     }
 
 }
