@@ -1,7 +1,9 @@
 package io.github.greatericontop.thedark.rounds.data;
 
+import io.github.greatericontop.thedark.enemy.ArmedStandardZombie;
 import io.github.greatericontop.thedark.enemy.BasicZombie;
 import io.github.greatericontop.thedark.enemy.EmeraldVindicator;
+import io.github.greatericontop.thedark.enemy.StandardZombie;
 import io.github.greatericontop.thedark.rounds.operation.BaseOperation;
 import io.github.greatericontop.thedark.rounds.operation.RoundOperationHelper;
 
@@ -48,6 +50,13 @@ public class Data1To10 {
             .addSpawnOneAtATime(BasicZombie.class, 16, 40, false)
             .delaySeconds(12)
             .addSpawnOneAtATime(EmeraldVindicator.class, 1, 1, false)
+    .getOutput();
+
+    public static final BaseOperation[] R5 = new RoundOperationHelper(4 * 20)
+            .addSpawnOneAtATime(BasicZombie.class, 10, 40, true)
+            .addSpawnOneAtATime(StandardZombie.class, 10, 60, false)
+            .delaySeconds(6)
+            .addSpawnOneAtATime(ArmedStandardZombie.class, 8, 40, false)
     .getOutput();
 
 

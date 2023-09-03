@@ -10,6 +10,7 @@ public class RoundData {
             Data1To10.R2,
             Data1To10.R3,
             Data1To10.R4,
+            Data1To10.R5,
     };
 
 }
