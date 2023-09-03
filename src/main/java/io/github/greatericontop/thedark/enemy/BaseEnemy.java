@@ -14,11 +14,12 @@ public abstract class BaseEnemy {
         return entity.isDead();
     }
 
-    protected void applyAttributes(double maxHealth, double speed) {
+    protected void setUp(double maxHealth, double speed) {
         entity.getAttribute(Attribute.GENERIC_MAX_HEALTH).setBaseValue(maxHealth);
         entity.setHealth(maxHealth);
         entity.getAttribute(Attribute.GENERIC_MOVEMENT_SPEED).setBaseValue(speed);
-        entity.getAttribute(Attribute.GENERIC_FOLLOW_RANGE).setBaseValue(64.0);
+        entity.getAttribute(Attribute.GENERIC_FOLLOW_RANGE).setBaseValue(80.0);
+        entity.setPersistent(true);
     }
 
 

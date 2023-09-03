@@ -10,7 +10,7 @@ public class PigZombie extends BaseEnemy {
 
     public PigZombie(Location spawnLocation) {
         entity = (LivingEntity) spawnLocation.getWorld().spawnEntity(spawnLocation, EntityType.ZOMBIFIED_PIGLIN, false);
-        applyAttributes(25.0, 0.23); // 25% extra health, same speed
+        setUp(25.0, 0.23); // 25% extra health, same speed
         entity.getEquipment().setHelmet(new ItemStack(Material.GOLDEN_HELMET, 1));
         entity.getEquipment().setItemInMainHand(new ItemStack(Material.GOLDEN_SWORD, 1));
     }

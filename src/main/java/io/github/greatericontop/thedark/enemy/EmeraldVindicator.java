@@ -10,7 +10,7 @@ public class EmeraldVindicator extends BaseEnemy {
 
     public EmeraldVindicator(Location spawnLocation) {
         entity = (LivingEntity) spawnLocation.getWorld().spawnEntity(spawnLocation, EntityType.VINDICATOR, false);
-        applyAttributes(48.0, 0.35); // 2x health, speed same as vanilla
+        setUp(48.0, 0.35); // 2x health, speed same as vanilla
         entity.getEquipment().setItemInMainHand(new ItemStack(Material.IRON_AXE, 1));
     }
 
