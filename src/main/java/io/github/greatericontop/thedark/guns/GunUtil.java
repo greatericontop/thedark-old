@@ -59,7 +59,7 @@ public class GunUtil implements Listener {
 
         // special properties
         if (gunType.getClassification() == GunClassification.SHOTGUN) {
-            for (LivingEntity e : targetLoc.getNearbyLivingEntities(2.0)) {
+            for (LivingEntity e : targetLoc.getNearbyLivingEntities(2.5)) {
                 if (e.getType() == EntityType.PLAYER) {
                     continue;
                 }

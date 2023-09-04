@@ -45,13 +45,13 @@ public enum GunType {
     ),
 
     SHOTGUN(
-            0, 4.0, 25L, 400, 5,
+            0, 5.0, 25L, 400, 5,
             GunClassification.SHOTGUN,
             Material.IRON_SHOVEL,
             "§fShotgun"
     ),
     SHOTGUN_1STAR(
-            1, 5.0, 25L, -1, 6,
+            1, 6.0, 25L, -1, 6,
             GunClassification.SHOTGUN,
             Material.IRON_SHOVEL,
             "§eShotgun §9⚝"
