@@ -1,9 +1,15 @@
 package io.github.greatericontop.thedark;
 
+import io.github.greatericontop.thedark.enemy.BaseEnemy;
+import io.github.greatericontop.thedark.enemy.pigs.PigBrute;
+import io.github.greatericontop.thedark.enemy.pigs.PigZombie;
 import io.github.greatericontop.thedark.enemy.zombies.BasicZombie;
 import io.github.greatericontop.thedark.enemy.other.EmeraldVindicator;
 import io.github.greatericontop.thedark.enemy.other.FatDebugZombie;
+import io.github.greatericontop.thedark.enemy.zombies.MilitantZombie;
 import io.github.greatericontop.thedark.enemy.zombies.StandardZombie;
+import io.github.greatericontop.thedark.enemy.zombies.ZombieVillager;
+import io.github.greatericontop.thedark.enemy.zombies.ZombieVillagerBaby;
 import io.github.greatericontop.thedark.guns.BuyGunManager;
 import io.github.greatericontop.thedark.guns.GunType;
 import io.github.greatericontop.thedark.menus.SignListener;
@@ -45,38 +51,43 @@ public class TheDarkCommand implements CommandExecutor {
             return true;
         }
 
-        if (args[0].equals("spawnBasicZombies")) {
-            for (int i = 0; i < 5; i++) {
-                plugin.getGameManager().spawnEnemy(BasicZombie.class, player.getLocation());
+        if (args[0].equals("spawnMob")) {
+            if (args.length < 3) {
+                player.sendMessage("§c/thedark spawnMob <className> <count>");
+                return true;
             }
-            return true;
-        }
-        if (args[0].equals("spawnDebugZombie")) {
-            plugin.getGameManager().spawnEnemy(FatDebugZombie.class, player.getLocation());
-            return true;
-        }
-        if (args[0].equals("spawnSomeEnemies")) {
-            for (int i = 0; i < 10; i++) {
-                plugin.getGameManager().spawnEnemy(BasicZombie.class, player.getLocation());
-                plugin.getGameManager().spawnEnemy(StandardZombie.class, player.getLocation());
+            String className = args[1];
+            Class<? extends BaseEnemy> clazz;
+            // ZOMBIES
+            if (className.equalsIgnoreCase("BasicZombie"))  {
+                clazz = BasicZombie.class;
+            } else if (className.equalsIgnoreCase("StandardZombie"))  {
+                clazz = StandardZombie.class;
+            } else if (className.equalsIgnoreCase("MilitantZombie"))  {
+                clazz = MilitantZombie.class;
+            } else if (className.equalsIgnoreCase("ZombieVillager"))  {
+                clazz = ZombieVillager.class;
+            } else if (className.equalsIgnoreCase("ZombieVillagerBaby"))  {
+                clazz = ZombieVillagerBaby.class;
             }
-            return true;
-        }
-        if (args[0].equals("spawnRandomAssault")) {
-            player.sendMessage("§3Assault begins in 10 seconds.");
-            Location savedLoc = player.getLocation();
-            Bukkit.getScheduler().runTaskLater(plugin, () -> debug_spawnEnemies(3, 1, savedLoc), 200L);
-            Bukkit.getScheduler().runTaskLater(plugin, () -> debug_spawnEnemies(5, 2, savedLoc), 600L);
-            Bukkit.getScheduler().runTaskLater(plugin, () -> debug_spawnEnemies(10, 5, savedLoc), 1000L);
-            Bukkit.getScheduler().runTaskLater(plugin, () -> debug_spawnEnemies(10, 10, savedLoc), 1600L);
-            Bukkit.getScheduler().runTaskLater(plugin, () -> debug_spawnEnemies(10, 10, savedLoc), 2200L);
-            Bukkit.getScheduler().runTaskLater(plugin, () -> player.sendMessage("§3This is the last wave!"), 2700L);
-            Bukkit.getScheduler().runTaskLater(plugin, () -> debug_spawnEnemies(20, 15, savedLoc), 2800L);
-            return true;
-        }
-        if (args[0].equals("spawnVindicator")) {
-            for (int i = 0; i < 15; i++) {
-                plugin.getGameManager().spawnEnemy(EmeraldVindicator.class, player.getLocation());
+            // PIGS
+            else if (className.equalsIgnoreCase("PigZombie"))  {
+                clazz = PigZombie.class;
+            } else if (className.equalsIgnoreCase("PigBrute"))  {
+                clazz = PigBrute.class;
+            }
+            // OTHER
+            else if (className.equalsIgnoreCase("EmeraldVindicator"))  {
+                clazz = EmeraldVindicator.class;
+            } else if (className.equalsIgnoreCase("FatDebugZombie"))  {
+                clazz = FatDebugZombie.class;
+            } else {
+                player.sendMessage("§cUnknown className " + className);
+                return true;
+            }
+            int count = Integer.parseInt(args[2]);
+            for (int i = 0; i < count; i++) {
+                plugin.getGameManager().spawnEnemy(clazz, player.getLocation());
             }
             return true;
         }
@@ -106,7 +117,7 @@ public class TheDarkCommand implements CommandExecutor {
             }
             return true;
         }
-        if (args[0].equals("forceBuyGun")) {
+        if (args[0].equals("buyGun")) {
             GunType toGive = GunType.valueOf(args[1]);
             BuyGunManager.attemptGive(toGive, player, player.getInventory().getHeldItemSlot());
             return true;
