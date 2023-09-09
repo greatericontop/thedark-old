@@ -11,7 +11,7 @@ public class FatDebugZombie extends BaseEnemy {
 
     public FatDebugZombie(Location spawnLocation) {
         entity = (LivingEntity) spawnLocation.getWorld().spawnEntity(spawnLocation, EntityType.ZOMBIE, false);
-        setUp(400.0, 0.115);
+        setUp(700.0, 0.115);
         entity.getEquipment().setChestplate(new ItemStack(Material.DIAMOND_CHESTPLATE, 1));
     }
 
