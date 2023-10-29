@@ -51,7 +51,7 @@ public class Data1To15 {
             .delaySeconds(8)
             .addSpawnOneAtATime(BasicZombie.class, 16, 40, false)
             .delaySeconds(12)
-            .addSpawnOneAtATime(EmeraldVindicator.class, 1, 1, false)
+            .addSpawnOneAtATime(EmeraldVindicator.class, 1, 1, false) // EMERALD VINDICATOR
     .getOutput();
 
     public static final BaseOperation[] R5 = new RoundOperationHelper(4 * 20)
@@ -69,6 +69,8 @@ public class Data1To15 {
             .addSpawnOneAtATime(StandardZombie.class, 10, 60, false)
             .delaySeconds(12)
             .addSpawnOneAtATime(StandardZombie.class, 12, 40, false)
+            .delaySeconds(12)
+            .addSpawnOneAtATime(EmeraldVindicator.class, 1, 1, false) // EMERALD VINDICATOR
     .getOutput();
 
     public static final BaseOperation[] R7 = new RoundOperationHelper(4 * 20)
@@ -85,6 +87,8 @@ public class Data1To15 {
             .addSpawnOneAtATime(MilitantZombie.class, 12, 5, true)
             .delaySeconds(10)
             .addSpawnOneAtATime(StandardZombie.class, 20, 40, false)
+            .delaySeconds(12)
+            .addSpawnOneAtATime(EmeraldVindicator.class, 1, 1, false) // EMERALD VINDICATOR
     .getOutput();
 
     public static final BaseOperation[] R9 = new RoundOperationHelper(4 * 20)
@@ -101,6 +105,8 @@ public class Data1To15 {
     public static final BaseOperation[] R11 = new RoundOperationHelper(4 * 20)
             .addSpawnOneAtATime(ZombieVillager.class, 35, 20, true)
             .addSpawnOneAtATime(StandardZombie.class, 10, 60, false)
+            .delaySeconds(12)
+            .addSpawnOneAtATime(EmeraldVindicator.class, 1, 1, false) // EMERALD VINDICATOR
     .getOutput();
 
     public static final BaseOperation[] R12 = new RoundOperationHelper(4 * 20)
@@ -120,6 +126,8 @@ public class Data1To15 {
             .addSpawnOneAtATime(MilitantZombie.class, 15, 60, true)
             .addSpawnOneAtATime(StandardZombie.class, 20, 41, true)
             .addSpawnOneAtATime(BasicZombie.class, 20, 42, false)
+            .delaySeconds(12)
+            .addSpawnOneAtATime(EmeraldVindicator.class, 1, 1, false) // EMERALD VINDICATOR
     .getOutput();
 
     public static final BaseOperation[] R14 = new RoundOperationHelper(4 * 20)

@@ -5,7 +5,6 @@ import io.github.greatericontop.thedark.guns.GunClassification;
 import io.github.greatericontop.thedark.guns.GunType;
 import io.github.greatericontop.thedark.guns.GunUtil;
 import io.github.greatericontop.thedark.player.PlayerProfile;
-import io.github.greatericontop.thedark.util.RouletteLootTable;
 import io.github.greatericontop.thedark.util.Util;
 import net.kyori.adventure.text.Component;
 import org.bukkit.Bukkit;
@@ -22,10 +21,11 @@ import org.bukkit.persistence.PersistentDataType;
 public class EnhancementListener extends GenericMenu {
     public static final Component INVENTORY_NAME = Component.text("§c[TheDark] §2Item Enhancer");
 
-    private static final int[] ENHANCEMENT_COSTS = {
-            3000, // i=0, first
-            10000, // i=1, second
-            20000, // i=2, third
+    private static final int[][] ENHANCEMENT_COSTS = {
+            {}, // maxEnhancementStars=0
+            {2_000}, // maxEnhancementStars=1
+            {3_000, 10_000}, // maxEnhancementStars=2
+            {5_000, 15_000, 25_000}, // maxEnhancementStars=3
     };
 
     private final TheDark plugin;
@@ -55,7 +55,7 @@ public class EnhancementListener extends GenericMenu {
             player.sendMessage("§cThis gun is already maxed out!");
             return;
         }
-        int coinCost = ENHANCEMENT_COSTS[gunType.getEnhancementStarCount()];
+        int coinCost = ENHANCEMENT_COSTS[gunClassification.getMaxEnhancementStars()][gunType.getEnhancementStarCount()];
 
         ItemStack info = Util.createItemStack(Material.DIAMOND, 1, "§bEnhancement",
                 String.format("§6%d §b-> §6§l%d", gunType.getEnhancementStarCount(), gunType.getEnhancementStarCount() + 1),
@@ -105,7 +105,7 @@ public class EnhancementListener extends GenericMenu {
             player.closeInventory();
             return;
         }
-        int coinCost = ENHANCEMENT_COSTS[gunType.getEnhancementStarCount()];
+        int coinCost = ENHANCEMENT_COSTS[gunClassification.getMaxEnhancementStars()][gunType.getEnhancementStarCount()];
         if (profile.coins < coinCost) {
             player.sendMessage("§cYou don't have enough coins!");
             player.closeInventory();

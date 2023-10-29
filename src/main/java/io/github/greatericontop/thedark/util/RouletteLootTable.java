@@ -14,7 +14,7 @@ public class RouletteLootTable {
         return new int[] {
                 2_000, // 0 - Flamethrower
                 2_000, // 1 - Midas Pistol
-                17_500, // 2 - Rocket Launcher
+                10_000, // 2 - Rocket Launcher
                 1_000, // 3 - sword sharpness upgrade
         }[winKey];
     }

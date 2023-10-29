@@ -1,11 +1,11 @@
 package io.github.greatericontop.thedark;
 
 import io.github.greatericontop.thedark.enemy.BaseEnemy;
+import io.github.greatericontop.thedark.enemy.other.EmeraldVindicator;
+import io.github.greatericontop.thedark.enemy.other.FatDebugZombie;
 import io.github.greatericontop.thedark.enemy.pigs.PigBrute;
 import io.github.greatericontop.thedark.enemy.pigs.PigZombie;
 import io.github.greatericontop.thedark.enemy.zombies.BasicZombie;
-import io.github.greatericontop.thedark.enemy.other.EmeraldVindicator;
-import io.github.greatericontop.thedark.enemy.other.FatDebugZombie;
 import io.github.greatericontop.thedark.enemy.zombies.MilitantZombie;
 import io.github.greatericontop.thedark.enemy.zombies.StandardZombie;
 import io.github.greatericontop.thedark.enemy.zombies.ZombieVillager;
@@ -16,7 +16,6 @@ import io.github.greatericontop.thedark.menus.SignListener;
 import io.github.greatericontop.thedark.player.PlayerProfile;
 import io.github.greatericontop.thedark.rounds.RoundUtil;
 import io.github.greatericontop.thedark.rounds.operation.OperationContext;
-import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
@@ -95,6 +94,10 @@ public class TheDarkCommand implements CommandExecutor {
             PlayerProfile profile = new PlayerProfile(player);
             profile.coins = Integer.parseInt(args[1]);
             plugin.getGameManager().playerProfiles.put(player.getUniqueId(), profile);
+            return true;
+        }
+        if (args[0].equals("addCoins")) {
+            plugin.getGameManager().playerProfiles.get(player.getUniqueId()).coins += Integer.parseInt(args[1]);
             return true;
         }
         if (args[0].equals("setSign")) {
